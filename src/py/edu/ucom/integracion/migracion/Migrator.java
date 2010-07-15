@@ -66,4 +66,8 @@ public class Migrator
 
         return false;
     }
+    
+    private void migrarCuotas(ConexionServer serverOrigen, ConexionServer serverDestino) throws SQLException{
+    	ResultSet x = serverOrigen.selectQuery("select * from socios");
+    }
 }
