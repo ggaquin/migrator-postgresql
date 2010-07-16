@@ -1,5 +1,8 @@
 package py.edu.ucom.integracion.migracion.tables;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import py.edu.ucom.integracion.migracion.ConexionServer;
 
 /***********************************************************************
@@ -14,40 +17,31 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
  */
 public class Creditos implements DatabaseTables {
 
-    public java.lang.String nroCredito;
-    public java.util.Date fecDesmbolso;
+    public String nroCredito;
+    public Date fecDesmbolso;
     public double monTotal;
-    public java.util.Collection<Pagos> pagos;
+    public ArrayList<Pagos> pagos;
     public Solicitudes solicitudes;
     public TipCreditos tipCreditos;
 
-    public java.util.Collection<Pagos> getPagos() {
+    public ArrayList<Pagos> getPagos() {
         if (pagos == null) {
-            pagos = new java.util.HashSet<Pagos>();
+            pagos = new ArrayList<Pagos>();
         }
         return pagos;
     }
 
-    public java.util.Iterator getIteratorPagos() {
-        if (pagos == null) {
-            pagos = new java.util.HashSet<Pagos>();
-        }
-        return pagos.iterator();
+    public void setAllPagos(ArrayList<Pagos> newPagos) {
+    	if (this.pagos == null)
+    	this.pagos.addAll(newPagos);
     }
 
-    public void setPagos(java.util.Collection<Pagos> newPagos) {
-        removeAllPagos();
-        for (java.util.Iterator iter = newPagos.iterator(); iter.hasNext();) {
-            addPagos((Pagos) iter.next());
-        }
-    }
-
-    public void addPagos(Pagos newPagos) {
+    public void addPago(Pagos newPagos) {
         if (newPagos == null) {
             return;
         }
         if (this.pagos == null) {
-            this.pagos = new java.util.HashSet<Pagos>();
+            this.pagos = new ArrayList<Pagos>();
         }
         if (!this.pagos.contains(newPagos)) {
             this.pagos.add(newPagos);
@@ -70,11 +64,11 @@ public class Creditos implements DatabaseTables {
     public void removeAllPagos() {
         if (pagos != null) {
             Pagos oldPagos;
-            for (java.util.Iterator iter = getIteratorPagos(); iter.hasNext();) {
-                oldPagos = (Pagos) iter.next();
-                iter.remove();
-                oldPagos.setCreditos((Creditos) null);
-            }
+//            for (java.util.Iterator iter = getIteratorPagos(); iter.hasNext();) {
+//                oldPagos = (Pagos) iter.next();
+//                iter.remove();
+//                oldPagos.setCreditos((Creditos) null);
+//            }
         }
     }
 
