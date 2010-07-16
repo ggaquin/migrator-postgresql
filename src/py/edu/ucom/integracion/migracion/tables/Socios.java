@@ -26,7 +26,6 @@ public class Socios implements DatabaseTables {
     private java.util.Date fecIngreso;
     public Aportes aportes;
     public java.util.Collection<Pagos> pagos;
-    public java.util.Collection<Solicitudes> solicitudes;
     private TipDocumento tipDocumento;
 
     public Aportes getAportes() {
@@ -103,62 +102,6 @@ public class Socios implements DatabaseTables {
         }
     }
 
-    public java.util.Collection<Solicitudes> getSolicitudes() {
-        if (solicitudes == null) {
-            solicitudes = new java.util.HashSet<Solicitudes>();
-        }
-        return solicitudes;
-    }
-
-    public java.util.Iterator getIteratorSolicitudes() {
-        if (solicitudes == null) {
-            solicitudes = new java.util.HashSet<Solicitudes>();
-        }
-        return solicitudes.iterator();
-    }
-
-    public void setSolicitudes(java.util.Collection<Solicitudes> newSolicitudes) {
-        removeAllSolicitudes();
-        for (java.util.Iterator iter = newSolicitudes.iterator(); iter.hasNext();) {
-            addSolicitudes((Solicitudes) iter.next());
-        }
-    }
-
-    public void addSolicitudes(Solicitudes newSolicitudes) {
-        if (newSolicitudes == null) {
-            return;
-        }
-        if (this.solicitudes == null) {
-            this.solicitudes = new java.util.HashSet<Solicitudes>();
-        }
-        if (!this.solicitudes.contains(newSolicitudes)) {
-            this.solicitudes.add(newSolicitudes);
-            newSolicitudes.setSocios(this);
-        }
-    }
-
-    public void removeSolicitudes(Solicitudes oldSolicitudes) {
-        if (oldSolicitudes == null) {
-            return;
-        }
-        if (this.solicitudes != null) {
-            if (this.solicitudes.contains(oldSolicitudes)) {
-                this.solicitudes.remove(oldSolicitudes);
-                oldSolicitudes.setSocios((Socios) null);
-            }
-        }
-    }
-
-    public void removeAllSolicitudes() {
-        if (solicitudes != null) {
-            Solicitudes oldSolicitudes;
-            for (java.util.Iterator iter = getIteratorSolicitudes(); iter.hasNext();) {
-                oldSolicitudes = (Solicitudes) iter.next();
-                iter.remove();
-                oldSolicitudes.setSocios((Socios) null);
-            }
-        }
-    }
 
     public TipDocumento getTipDocumento() {
         return tipDocumento;

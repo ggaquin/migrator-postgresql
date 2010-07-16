@@ -34,12 +34,6 @@ public class ConexionServer {
         inicializarConexion(rutaConexion, user, pass);
     }
 
-//    protected void Conector(String host, String puerto, String user, String pass) {
-//        rutaConexion = "jdbc:postgresql://" + host + ":" + puerto + "/migracion";
-//
-//        inicializarConexion(rutaConexion, user, pass);
-//    }
-
     private void inicializarConexion(String rutaConexion, String user, String pass) {
         try {
             Class.forName("org.postgresql.Driver");
@@ -88,6 +82,11 @@ public class ConexionServer {
         return this.statement;
     }
 
+    public PreparedStatement getPrepareStatement(String query) throws SQLException {
+		PreparedStatement statement = this.conn.prepareStatement(query);
+		return statement;
+		
+	}
     /**
      * @return the conn
      */

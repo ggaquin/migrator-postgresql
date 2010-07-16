@@ -1,6 +1,5 @@
 package py.edu.ucom.integracion.migracion.tables;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import py.edu.ucom.integracion.migracion.ConexionServer;
@@ -17,78 +16,13 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
  */
 public class Creditos implements DatabaseTables {
 
-    public String nroCredito;
-    public Date fecDesmbolso;
-    public double monTotal;
-    public ArrayList<Pagos> pagos;
-    public Solicitudes solicitudes;
-    public TipCreditos tipCreditos;
+	private String nroCredito;
+    private Date fecDesmbolso;
+    private double monTotal;
+    private TipCreditos tipCreditos;
+    private String socio;
+    private Solicitudes solicitud;
 
-    public ArrayList<Pagos> getPagos() {
-        if (pagos == null) {
-            pagos = new ArrayList<Pagos>();
-        }
-        return pagos;
-    }
-
-    public void setAllPagos(ArrayList<Pagos> newPagos) {
-    	if (this.pagos == null)
-    	this.pagos.addAll(newPagos);
-    }
-
-    public void addPago(Pagos newPagos) {
-        if (newPagos == null) {
-            return;
-        }
-        if (this.pagos == null) {
-            this.pagos = new ArrayList<Pagos>();
-        }
-        if (!this.pagos.contains(newPagos)) {
-            this.pagos.add(newPagos);
-            newPagos.setCreditos(this);
-        }
-    }
-
-    public void removePagos(Pagos oldPagos) {
-        if (oldPagos == null) {
-            return;
-        }
-        if (this.pagos != null) {
-            if (this.pagos.contains(oldPagos)) {
-                this.pagos.remove(oldPagos);
-                oldPagos.setCreditos((Creditos) null);
-            }
-        }
-    }
-
-    public void removeAllPagos() {
-        if (pagos != null) {
-            Pagos oldPagos;
-//            for (java.util.Iterator iter = getIteratorPagos(); iter.hasNext();) {
-//                oldPagos = (Pagos) iter.next();
-//                iter.remove();
-//                oldPagos.setCreditos((Creditos) null);
-//            }
-        }
-    }
-
-    public Solicitudes getSolicitudes() {
-        return solicitudes;
-    }
-
-    public void setSolicitudes(Solicitudes newSolicitudes) {
-        if (this.solicitudes == null || !this.solicitudes.equals(newSolicitudes)) {
-            if (this.solicitudes != null) {
-                Solicitudes oldSolicitudes = this.solicitudes;
-                this.solicitudes = null;
-                oldSolicitudes.removeCreditos(this);
-            }
-            if (newSolicitudes != null) {
-                this.solicitudes = newSolicitudes;
-                this.solicitudes.addCreditos(this);
-            }
-        }
-    }
 
     public TipCreditos getTipCreditos() {
         return tipCreditos;
@@ -99,11 +33,9 @@ public class Creditos implements DatabaseTables {
             if (this.tipCreditos != null) {
                 TipCreditos oldTipCreditos = this.tipCreditos;
                 this.tipCreditos = null;
-                oldTipCreditos.removeCreditos(this);
             }
             if (newTipCreditos != null) {
                 this.tipCreditos = newTipCreditos;
-                this.tipCreditos.addCreditos(this);
             }
         }
     }
@@ -119,4 +51,74 @@ public class Creditos implements DatabaseTables {
     public void migrar(ConexionServer server) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+	/**
+	 * @return the nroCredito
+	 */
+	public String getNroCredito() {
+		return nroCredito;
+	}
+
+	/**
+	 * @return the fecDesmbolso
+	 */
+	public Date getFecDesmbolso() {
+		return fecDesmbolso;
+	}
+
+	/**
+	 * @return the monTotal
+	 */
+	public double getMonTotal() {
+		return monTotal;
+	}
+
+	/**
+	 * @param nroCredito the nroCredito to set
+	 */
+	public void setNroCredito(String nroCredito) {
+		this.nroCredito = nroCredito;
+	}
+
+	/**
+	 * @param fecDesmbolso the fecDesmbolso to set
+	 */
+	public void setFecDesmbolso(Date fecDesmbolso) {
+		this.fecDesmbolso = fecDesmbolso;
+	}
+
+	/**
+	 * @param monTotal the monTotal to set
+	 */
+	public void setMonTotal(double monTotal) {
+		this.monTotal = monTotal;
+	}
+
+	/**
+	 * @return the socio
+	 */
+	public String getSocio() {
+		return socio;
+	}
+
+	/**
+	 * @param socio the socio to set
+	 */
+	public void setSocio(String socio) {
+		this.socio = socio;
+	}
+
+	/**
+	 * @return the solicitud
+	 */
+	public Solicitudes getSolicitud() {
+		return solicitud;
+	}
+
+	/**
+	 * @param solicitud the solicitud to set
+	 */
+	public void setSolicitud(Solicitudes solicitud) {
+		this.solicitud = solicitud;
+	}
 }
