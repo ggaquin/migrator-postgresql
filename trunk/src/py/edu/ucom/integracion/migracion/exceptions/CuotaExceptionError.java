@@ -9,7 +9,6 @@ package py.edu.ucom.integracion.migracion.exceptions;
  * 
  * @author Largonet
  */
-@SuppressWarnings("serial")
 public class CuotaExceptionError extends Exception {
 	private String error;
 
