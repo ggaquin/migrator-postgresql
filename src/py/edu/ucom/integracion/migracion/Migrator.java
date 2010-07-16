@@ -7,10 +7,14 @@ package py.edu.ucom.integracion.migracion;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import py.edu.ucom.integracion.migracion.tables.DatabaseTables;
+
+import org.postgresql.util.PSQLException;
+
+import py.edu.ucom.integracion.migracion.exceptions.CreditosExceptionError;
+import py.edu.ucom.integracion.migracion.exceptions.SociosExceptionError;
+import py.edu.ucom.integracion.migracion.tables.Creditos;
 import py.edu.ucom.integracion.migracion.tables.Socios;
 
 /**
@@ -32,9 +36,17 @@ public class Migrator
         ConexionServer serverDestino = conectarse(host,"cooperativa", user, pass);
         try {
             migrarSocios(serverOrigen, serverDestino);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+        	System.out.println("Error en SOCIOS!!!");
             Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        try {
+			migrarCuotas(serverOrigen, serverDestino);
+		} catch (Exception e) {
+			System.out.println("Error en CUOTAS!!!");
+			e.printStackTrace();
+		}
 
     }
 
@@ -46,28 +58,83 @@ public class Migrator
         return server;
     }
 
-    private boolean migrarSocios(ConexionServer serverOrigen, ConexionServer serverDestino) throws SQLException {
-        ResultSet x = serverOrigen.selectQuery("select * from socios");
+    private boolean migrarSocios(ConexionServer serverOrigen, ConexionServer serverDestino) throws SociosExceptionError {
+        ResultSet x;
         Socios socios;
-        ArrayList<DatabaseTables> arrayDatabase = new ArrayList<DatabaseTables>();
-        while (x.next()) {
-            socios = new Socios();
-            socios.setNroSocio(x.getString(1));
-            socios.setFecIngreso(x.getDate(2));
-            socios.setNombres(x.getString(3));
-            socios.setApellidos(x.getString(4));
-            socios.setNroDocumento(x.getString(5));
-            socios.setAportes(x.getInt(7));
-//            System.out.println(socios.getApellidos() + " - " + socios.getFecIngreso().toString());
-            arrayDatabase.add(socios);
-            socios.save(serverDestino);
-        }
-
-
+		try {
+			x = serverOrigen.selectQuery("select * from socios");
+			while (x.next()) {
+			    socios = new Socios();
+			    socios.setNroSocio(x.getString(1));
+			    socios.setFecIngreso(x.getDate(2));
+			    socios.setNombres(x.getString(3));
+			    socios.setApellidos(x.getString(4));
+			    socios.setNroDocumento(x.getString(5));
+			    socios.setAportes(x.getInt(7));
+			    socios.save(serverDestino);
+			}
+		} catch (PSQLException e) {
+			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		} catch (SQLException e) {
+			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		}
         return false;
     }
     
-    private void migrarCuotas(ConexionServer serverOrigen, ConexionServer serverDestino) throws SQLException{
-    	ResultSet x = serverOrigen.selectQuery("select * from socios");
+    private boolean migrarCuotas(ConexionServer serverOrigen, ConexionServer serverDestino) throws SociosExceptionError{
+//    	ResultSet x = serverOrigen.selectQuery("SELECT * FROM public.cuotas");
+//    	Cuotas cuotas = new Cuotas();
+//    	try {
+//			x = serverOrigen.selectQuery("select * from socios");
+//			while (x.next()) {
+//				cuotas = new Cuotas();
+//				cuotas.s(x.getString(1));
+//				cuotas.setFecIngreso(x.getDate(2));
+//			    cuotas.setNombres(x.getString(3));
+//			    cuotas.setApellidos(x.getString(4));
+//			    cuotas.setNroDocumento(x.getString(5));
+//			    cuotas.setAportes(x.getInt(7));
+//			    cuotas.save(serverDestino);
+//			}
+//		} catch (PSQLException e) {
+//			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+//			e.printStackTrace();
+//			throw error;
+//		} catch (SQLException e) {
+//			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+//			e.printStackTrace();
+//			throw error;
+//		}
+    	return false;
+
+    }
+    private boolean migrarCreditos(ConexionServer serverOrigen, ConexionServer serverDestino) throws CreditosExceptionError{
+    	 ResultSet x;
+         Creditos creditos;
+ 		try {
+ 			x = serverOrigen.selectQuery("select * from creditos");
+ 			while (x.next()) {
+ 				creditos = new Creditos();
+ 				//creditos.set
+// 				creditos.setNombres(x.getString(3));
+// 				creditos.setApellidos(x.getString(4));
+// 				creditos.setNroDocumento(x.getString(5));
+// 				creditos.setAportes(x.getInt(7));
+ 				creditos.save(serverDestino);
+ 			}
+ 		} catch (PSQLException e) {
+ 			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+ 			e.printStackTrace();
+ 		//	throw error;
+ 		} catch (SQLException e) {
+ 			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+ 			e.printStackTrace();
+// 			throw error;
+ 		}
+         return false;
     }
 }
