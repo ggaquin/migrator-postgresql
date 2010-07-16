@@ -1,5 +1,8 @@
 package py.edu.ucom.integracion.migracion.tables;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import py.edu.ucom.integracion.migracion.ConexionServer;
 
 /***********************************************************************
@@ -12,76 +15,26 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
  */
 public class Cuotas implements DatabaseTables{
 
-    public java.lang.String nroCuota;
+    public String nroCuota;
     public double canCuota;
     public double monCuota;
-    public java.util.Date fecUltCuoPagada;
+    public Date fecUltCuoPagada;
     public double salCuota;
-    public java.util.Collection<CuoPagadas> cuoPagadas;
+    public ArrayList<CuoPagadas> cuoPagadas;
 
-    public java.util.Collection<CuoPagadas> getCuoPagadas() {
-        if (cuoPagadas == null) {
-            cuoPagadas = new java.util.HashSet<CuoPagadas>();
-        }
+    public ArrayList<CuoPagadas> getCuoPagadas() {
+    	if (this.cuoPagadas == null){
+    		this.cuoPagadas = new ArrayList<CuoPagadas>();
+    	}
         return cuoPagadas;
     }
 
-    /** @pdGenerated default iterator getter */
-    public java.util.Iterator getIteratorCuoPagadas() {
-        if (cuoPagadas == null) {
-            cuoPagadas = new java.util.HashSet<CuoPagadas>();
-        }
-        return cuoPagadas.iterator();
+    public void setCuoPagadas(ArrayList<CuoPagadas> newCuoPagadas) {
+    	this.cuoPagadas = newCuoPagadas;
     }
 
-    /** @pdGenerated default setter
-     * @param newCuoPagadas */
-    public void setCuoPagadas(java.util.Collection<CuoPagadas> newCuoPagadas) {
-        removeAllCuoPagadas();
-        for (java.util.Iterator iter = newCuoPagadas.iterator(); iter.hasNext();) {
-            addCuoPagadas((CuoPagadas) iter.next());
-        }
-    }
-
-    /** @pdGenerated default add
-     * @param newCuoPagadas */
-    public void addCuoPagadas(CuoPagadas newCuoPagadas) {
-        if (newCuoPagadas == null) {
-            return;
-        }
-        if (this.cuoPagadas == null) {
-            this.cuoPagadas = new java.util.HashSet<CuoPagadas>();
-        }
-        if (!this.cuoPagadas.contains(newCuoPagadas)) {
-            this.cuoPagadas.add(newCuoPagadas);
-            newCuoPagadas.setCuotas(this);
-        }
-    }
-
-    /** @pdGenerated default remove
-     * @param oldCuoPagadas */
-    public void removeCuoPagadas(CuoPagadas oldCuoPagadas) {
-        if (oldCuoPagadas == null) {
-            return;
-        }
-        if (this.cuoPagadas != null) {
-            if (this.cuoPagadas.contains(oldCuoPagadas)) {
-                this.cuoPagadas.remove(oldCuoPagadas);
-                oldCuoPagadas.setCuotas((Cuotas) null);
-            }
-        }
-    }
-
-    /** @pdGenerated default removeAll */
-    public void removeAllCuoPagadas() {
-        if (cuoPagadas != null) {
-            CuoPagadas oldCuoPagadas;
-            for (java.util.Iterator iter = getIteratorCuoPagadas(); iter.hasNext();) {
-                oldCuoPagadas = (CuoPagadas) iter.next();
-                iter.remove();
-                oldCuoPagadas.setCuotas((Cuotas) null);
-            }
-        }
+    public void setCuoPagadas(CuoPagadas newCuoPagadas) {
+    	
     }
 
     public void save(ConexionServer server) {
