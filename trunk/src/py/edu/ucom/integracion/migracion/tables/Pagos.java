@@ -128,11 +128,9 @@ public class Pagos implements DatabaseTables {
 			if (this.creditos != null) {
 				Creditos oldCreditos = this.creditos;
 				this.creditos = null;
-				oldCreditos.removePagos(this);
 			}
 			if (newCreditos != null) {
 				this.creditos = newCreditos;
-				this.creditos.addPago(this);
 			}
 		}
 	}
