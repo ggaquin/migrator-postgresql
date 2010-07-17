@@ -180,8 +180,6 @@ public class Socios implements DatabaseTables {
             Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            return;
         }
         //System.out.println(this.nombres + " - " + this.fecIngreso.toString());
     }
