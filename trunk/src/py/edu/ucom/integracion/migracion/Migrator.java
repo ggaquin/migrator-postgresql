@@ -33,12 +33,12 @@ public class Migrator {
 		ConexionServer serverOrigen = conectarse(host, "migracion", user, pass);
 		ConexionServer serverDestino = conectarse(host, "cooperativa", user, pass);
 		try {
-			migrarSocios(serverOrigen, serverDestino);
+			//migrarSocios(serverOrigen, serverDestino);
 			migrarCreditos(serverOrigen, serverDestino);
-		} catch (SociosExceptionError e) {
-			System.out.println("Error en SOCIOS!!!");
-			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
-			e.printStackTrace();
+//		} catch (SociosExceptionError e) {
+//			System.out.println("Error en SOCIOS!!!");
+//			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
+//			e.printStackTrace();
 
 		} catch (CreditosExceptionError e) {
 			System.out.println("Error en CREDITOS!!!");
@@ -90,33 +90,31 @@ public class Migrator {
 		return false;
 	}
 
-	private boolean migrarCuotas(ConexionServer serverOrigen, ConexionServer serverDestino) throws SociosExceptionError {
-		// ResultSet x =
-		// serverOrigen.selectQuery("SELECT * FROM public.cuotas");
-		// Cuotas cuotas = new Cuotas();
-		// try {
-		// x = serverOrigen.selectQuery("select * from socios");
-		// while (x.next()) {
-		// cuotas = new Cuotas();
-		// cuotas.s(x.getString(1));
-		// cuotas.setFecIngreso(x.getDate(2));
-		// cuotas.setNombres(x.getString(3));
-		// cuotas.setApellidos(x.getString(4));
-		// cuotas.setNroDocumento(x.getString(5));
-		// cuotas.setAportes(x.getInt(7));
-		// cuotas.save(serverDestino);
-		// }
-		// } catch (PSQLException e) {
-		// SociosExceptionError error = new
-		// SociosExceptionError(e.getStackTrace().toString());
-		// e.printStackTrace();
-		// throw error;
-		// } catch (SQLException e) {
-		// SociosExceptionError error = new
-		// SociosExceptionError(e.getStackTrace().toString());
-		// e.printStackTrace();
-		// throw error;
-		// }
+	private boolean migrarPagos(ConexionServer serverOrigen, ConexionServer serverDestino) throws SociosExceptionError {
+		ResultSet x;
+		Socios socios;
+		try {
+			x = serverOrigen.selectQuery("select * from pagos");
+			while (x.next()) {
+				socios = new Socios();
+				socios.setNroSocio(x.getString(1));
+				socios.setFecIngreso(x.getDate(2));
+				socios.setNombres(x.getString(3));
+				socios.setApellidos(x.getString(4));
+				socios.setNroDocumento(x.getString(5));
+				socios.setAportes(x.getInt(7));
+				socios.save(serverDestino);
+			}
+		} catch (PSQLException e) {
+			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		} catch (SQLException e) {
+			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		}
+
 		return false;
 
 	}
@@ -141,7 +139,7 @@ public class Migrator {
 				solicitud.setNroSolicitud(String.valueOf(rstCreditos.getInt(5)));
 				int canCuotas = rstCreditos.getInt(9);
 				double monCuota = rstCreditos.getDouble(8);
-				System.out.println(monCuota * canCuotas);
+				//System.out.println(monCuota * canCuotas);
 				creditos.setMonTotal((rstCreditos.getDouble(8) * rstCreditos.getInt(9)));
 				creditos.setSolicitud(solicitud);
 				for (int i = 0; i < canCuotas; i++) {
@@ -152,34 +150,16 @@ public class Migrator {
 					cuota.setMonCuota(monCuota);
 					creditos.getCuotas().add(cuota);
 				}
-
-				// PreparedStatement statement =
-				// serverOrigen.getPrepareStatement(queryPagos);
-				// try {
-				// statement.setInt(1,
-				// Integer.parseInt(creditos.getNroCredito()));
-				// rstPagos = statement.executeQuery();
-				//
-				// } catch (SQLException e) {
-				// e.printStackTrace();
-				// }
-				// creditos.set
-				// creditos.setNombres(x.getString(3));
-				// creditos.setApellidos(x.getString(4));
-				// creditos.setNroDocumento(x.getString(5));
-				// creditos.setAportes(x.getInt(7));
 				creditos.save(serverDestino);
 			}
 		} catch (PSQLException e) {
 			SociosExceptionError error = new SociosExceptionError(e
 				.getStackTrace().toString());
 			e.printStackTrace();
-			// throw error;
 		} catch (SQLException e) {
 			SociosExceptionError error = new SociosExceptionError(e
 				.getStackTrace().toString());
 			e.printStackTrace();
-			// throw error;
 		}
 		return false;
 	}

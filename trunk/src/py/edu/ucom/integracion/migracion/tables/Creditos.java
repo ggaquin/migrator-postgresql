@@ -32,6 +32,8 @@ public class Creditos implements DatabaseTables {
 	private ArrayList<Cuotas> cuotas;
 
 	public ArrayList<Cuotas> getCuotas() {
+		if(this.cuotas == null)
+			this.cuotas = new ArrayList<Cuotas>();
 		return cuotas;
 	}
 
@@ -56,6 +58,7 @@ public class Creditos implements DatabaseTables {
 	}
 
 	public void save(ConexionServer server) {
+		this.solicitud.save(server);
 		String query = new String();
 		query = "INSERT INTO public.creditos(" +
 			"nro_credito," +
