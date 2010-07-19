@@ -22,7 +22,7 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
 public class Solicitudes implements DatabaseTables {
 
 	private String nroSolicitud;
-	private Date fecSolicitud;
+	private java.sql.Date fecSolicitud;
 	private String nroSocios;
 
 	public String getNroSolicitud() {
@@ -37,7 +37,7 @@ public class Solicitudes implements DatabaseTables {
 		return fecSolicitud;
 	}
 
-	public void setFecSolicitud(Date fecSolicitud) {
+	public void setFecSolicitud(java.sql.Date fecSolicitud) {
 		this.fecSolicitud = fecSolicitud;
 	}
 
@@ -61,7 +61,7 @@ public class Solicitudes implements DatabaseTables {
 				server.getConn().prepareStatement(query);
 			statement.setString(1, this.nroSocios);
 			statement.setString(2, this.nroSolicitud);
-			statement.setDate(3, (java.sql.Date) this.fecSolicitud);
+			statement.setDate(3, this.fecSolicitud);
 
 			statement.executeUpdate();
 		} catch (PSQLException ex) {
