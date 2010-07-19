@@ -1,5 +1,12 @@
 package py.edu.ucom.integracion.migracion.tables;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.postgresql.util.PSQLException;
+
 import py.edu.ucom.integracion.migracion.ConexionServer;
 
 /***********************************************************************
@@ -18,6 +25,9 @@ public class TipCreditos implements DatabaseTables {
 	public TipCreditos(String codTipCredito) {
 		this.codTipCredito = codTipCredito;
 	}
+	public TipCreditos(){
+		
+	}
 
 	private String codTipCredito;
     private String descripcion;
@@ -26,7 +36,26 @@ public class TipCreditos implements DatabaseTables {
     
 
     public void save(ConexionServer server) {
-        throw new UnsupportedOperationException("Not supported yet.");
+		String query = new String();
+		query = "INSERT INTO public.tip_creditos " +
+			"VALUES (?,?,?,?)";
+		try {
+			PreparedStatement statement =
+				server.getConn().prepareStatement(query);
+			statement.setString(1, this.codTipCredito);
+			statement.setString(2, this.descripcion);
+			statement.setDouble(3, this.relAporte);
+			statement.setDouble(4, this.maxMonto);
+
+			// System.out.println(this.nombres + " - " +
+			// this.fecIngreso.toString());
+
+			statement.executeUpdate();
+		} catch (PSQLException ex) {
+			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (SQLException ex) {
+			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
 
     public void delete(ConexionServer server) {

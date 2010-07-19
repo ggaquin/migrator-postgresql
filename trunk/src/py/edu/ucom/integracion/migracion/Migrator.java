@@ -10,11 +10,12 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.postgresql.jdbc2.EscapedFunctions;
 import org.postgresql.util.PSQLException;
+
 import py.edu.ucom.integracion.migracion.exceptions.CreditosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.SociosExceptionError;
+import py.edu.ucom.integracion.migracion.exceptions.TipCreditosExceptionError;
 import py.edu.ucom.integracion.migracion.tables.Creditos;
 import py.edu.ucom.integracion.migracion.tables.Cuotas;
 import py.edu.ucom.integracion.migracion.tables.Pagos;
@@ -38,6 +39,7 @@ public class Migrator {
 		ConexionServer serverDestino = conectarse(host, "cooperativa", user, pass);
 		try {
 			migrarSocios(serverOrigen, serverDestino);
+			migrarTipCreditos(serverOrigen, serverDestino);
 			migrarCreditos(serverOrigen, serverDestino);
 			migrarPagos(serverOrigen, serverDestino);
 		} catch (SociosExceptionError e) {
@@ -52,11 +54,40 @@ public class Migrator {
 			System.out.println("Error en PAGOS!!!");
 			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
+		} catch (TipCreditosExceptionError e) {
+			System.out.println("Error en TIPOS DE CREDITOS!!!");
+			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
 		} finally {
 			serverDestino.close();
 			serverOrigen.close();
 		}
 
+	}
+
+	private void migrarTipCreditos(ConexionServer serverOrigen, ConexionServer serverDestino) throws TipCreditosExceptionError {
+		ResultSet x;
+		TipCreditos tipCreditos;
+		try {
+			x = serverOrigen.selectQuery("select * from tipos_de_credito");
+			while (x.next()) {
+				tipCreditos = new TipCreditos();
+				tipCreditos.setCodTipCredito(x.getString(1));
+				tipCreditos.setDescripcion(x.getString(2));
+				tipCreditos.setRelAporte(x.getDouble(3));
+				tipCreditos.setMaxMonto(x.getDouble(4));
+				tipCreditos.save(serverDestino);
+			}
+		} catch (PSQLException e) {
+			TipCreditosExceptionError error = new TipCreditosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		} catch (SQLException e) {
+			TipCreditosExceptionError error = new TipCreditosExceptionError(e.getStackTrace().toString());
+			e.printStackTrace();
+			throw error;
+		}
+	
 	}
 
 	private ConexionServer conectarse(String host, String database, String user, String pass) {

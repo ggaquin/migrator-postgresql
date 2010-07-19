@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     18/07/2010 11:11:45 p.m.                     */
+/* Created on:     18/07/2010 11:20:54 p.m.                     */
 /*==============================================================*/
 
 
@@ -197,6 +197,7 @@ comment on table pagos is
 create table socios (
    nro_socio            pk_id                not null,
    cod_tip_documento    pk_id                null,
+   abreviacion          varchar(5)           null,
    nombres              nombres              null,
    apellidos            apellido             null,
    nro_documento        nro_documento        not null,
@@ -241,7 +242,8 @@ comment on table tip_creditos is
 create table tip_documento (
    cod_tip_documento    pk_id                not null,
    descripcion          descripcion          null,
-   constraint pk_tip_documento primary key (cod_tip_documento)
+   abreviacion          varchar(5)           not null,
+   constraint pk_tip_documento primary key (cod_tip_documento, abreviacion)
 );
 
 comment on table tip_documento is
@@ -307,8 +309,8 @@ alter table pagos
       on delete restrict on update restrict;
 
 alter table socios
-   add constraint fk_socios_reference_tip_docu foreign key (cod_tip_documento)
-      references tip_documento (cod_tip_documento)
+   add constraint fk_socios_reference_tip_docu foreign key (cod_tip_documento, abreviacion)
+      references tip_documento (cod_tip_documento, abreviacion)
       on delete restrict on update restrict;
 
 alter table solicitudes
