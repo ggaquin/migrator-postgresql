@@ -67,39 +67,15 @@ public class Socios implements DatabaseTables {
     }
 
     public void addPagos(Pagos newPagos) {
-        if (newPagos == null) {
-            return;
-        }
-        if (this.pagos == null) {
-            this.pagos = new java.util.HashSet<Pagos>();
-        }
-        if (!this.pagos.contains(newPagos)) {
-            this.pagos.add(newPagos);
-            newPagos.setSocios(this);
-        }
     }
 
     public void removePagos(Pagos oldPagos) {
         if (oldPagos == null) {
             return;
         }
-        if (this.pagos != null) {
-            if (this.pagos.contains(oldPagos)) {
-                this.pagos.remove(oldPagos);
-                oldPagos.setSocios((Socios) null);
-            }
-        }
     }
 
     public void removeAllPagos() {
-        if (pagos != null) {
-            Pagos oldPagos;
-            for (java.util.Iterator iter = getIteratorPagos(); iter.hasNext();) {
-                oldPagos = (Pagos) iter.next();
-                iter.remove();
-                oldPagos.setSocios((Socios) null);
-            }
-        }
     }
 
 

@@ -1,8 +1,14 @@
 package py.edu.ucom.integracion.migracion.tables;
 
 import java.sql.Array;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.postgresql.util.PSQLException;
 
 import py.edu.ucom.integracion.migracion.ConexionServer;
 
@@ -20,123 +26,75 @@ public class Pagos implements DatabaseTables {
 	public String codPago;
 	public Date fecPago;
 	public double monto;
-//	public ArrayList<DetPagos> detPagos;
-//	public ArrayList<CuoPagadas> cuoPagadas;
-	public Socios socios;
-	public Creditos creditos;
+	// public ArrayList<DetPagos> detPagos;
+	// public ArrayList<CuoPagadas> cuoPagadas;
+	public String nroSocios;
+	public String nroCreditos;
 
-	public ArrayList<DetPagos> getDetPagos() {
-//		if (detPagos == null) {
-//			detPagos = new ArrayList<DetPagos>();
-//		}
-//		return detPagos;
-		return null;
+	public String getCodPago() {
+		return codPago;
 	}
 
-	public void setDetPagos(ArrayList<DetPagos> newDetPagos) {
-		
+	public void setCodPago(String codPago) {
+		this.codPago = codPago;
 	}
 
-	public void addDetPagos(DetPagos newDetPagos) {
-//		if (newDetPagos == null) {
-//			return;
-//		}
-//		if (this.detPagos == null) {
-//			this.detPagos = new ArrayList<DetPagos>();
-//		}
-//		if (!this.detPagos.contains(newDetPagos)) {
-//			this.detPagos.add(newDetPagos);
-//			newDetPagos.setPagos(this);
-//		}
+	public Date getFecPago() {
+		return fecPago;
 	}
 
-	public void removeDetPagos(DetPagos oldDetPagos) {
-//		if (oldDetPagos == null) {
-//			return;
-//		}
-//		if (this.detPagos != null) {
-//			if (this.detPagos.contains(oldDetPagos)) {
-//				this.detPagos.remove(oldDetPagos);
-//				oldDetPagos.setPagos((Pagos) null);
-//			}
-//		}
+	public void setFecPago(Date fecPago) {
+		this.fecPago = fecPago;
 	}
 
-	public ArrayList<CuoPagadas> getCuoPagadas() {
-//		if (cuoPagadas == null) {
-//			cuoPagadas = new ArrayList<CuoPagadas>();
-//		}
-//		return cuoPagadas;
-		return null;
+	public double getMonto() {
+		return monto;
 	}
 
-	public void setCuoPagadas(ArrayList<CuoPagadas> newCuoPagadas) {
-		for (java.util.Iterator iter = newCuoPagadas.iterator(); iter.hasNext();) {
-			addCuoPagadas((CuoPagadas) iter.next());
-		}
+	public void setMonto(double monto) {
+		this.monto = monto;
 	}
 
-	public void addCuoPagadas(CuoPagadas newCuoPagadas) {
-//		if (newCuoPagadas == null) {
-//			return;
-//		}
-//		if (this.cuoPagadas == null) {
-//			this.cuoPagadas = new ArrayList<CuoPagadas>();
-//		}
-//		if (!this.cuoPagadas.contains(newCuoPagadas)) {
-//			this.cuoPagadas.add(newCuoPagadas);
-//			newCuoPagadas.setPagos(this);
-//		}
+	public String getNroSocios() {
+		return nroSocios;
 	}
 
-	public void removeCuoPagadas(CuoPagadas oldCuoPagadas) {
-//		if (oldCuoPagadas == null) {
-//			return;
-//		}
-//		if (this.cuoPagadas != null) {
-//			if (this.cuoPagadas.contains(oldCuoPagadas)) {
-//				this.cuoPagadas.remove(oldCuoPagadas);
-//				oldCuoPagadas.setPagos((Pagos) null);
-//			}
-//		}
+	public void setNroSocios(String nroSocios) {
+		this.nroSocios = nroSocios;
 	}
 
-	public Socios getSocios() {
-		return socios;
+	public String getNroCreditos() {
+		return nroCreditos;
 	}
 
-	public void setSocios(Socios newSocios) {
-		if (this.socios == null || !this.socios.equals(newSocios)) {
-			if (this.socios != null) {
-				Socios oldSocios = this.socios;
-				this.socios = null;
-				oldSocios.removePagos(this);
-			}
-			if (newSocios != null) {
-				this.socios = newSocios;
-				this.socios.addPagos(this);
-			}
-		}
-	}
-
-	public Creditos getCreditos() {
-		return creditos;
-	}
-
-	public void setCreditos(Creditos newCreditos) {
-		if (this.creditos == null || !this.creditos.equals(newCreditos)) {
-			if (this.creditos != null) {
-				Creditos oldCreditos = this.creditos;
-				this.creditos = null;
-			}
-			if (newCreditos != null) {
-				this.creditos = newCreditos;
-			}
-		}
+	public void setNroCreditos(String nroCreditos) {
+		this.nroCreditos = nroCreditos;
 	}
 
 	public void save(ConexionServer server) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		String query = new String();
+		query = "INSERT INTO public.pagos(" +
+			"cod_pago," +
+			"nro_socio," +
+			"nro_credito," +
+			"fec_pago," +
+			"monto) VALUES (?,?,?,?,?)";
+		try {
+			PreparedStatement statement =
+				server.getConn().prepareStatement(query);
+			statement.setString(1, this.codPago);
+			statement.setString(2, this.nroSocios);
+			statement.setString(3, this.nroCreditos);
+			statement.setDate(4, (java.sql.Date) this.fecPago);
+			statement.setDouble(5, this.monto);
+
+
+			statement.executeUpdate();
+		} catch (PSQLException ex) {
+			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (SQLException ex) {
+			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	public void delete(ConexionServer server) {
