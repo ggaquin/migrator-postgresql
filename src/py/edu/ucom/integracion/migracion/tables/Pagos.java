@@ -1,6 +1,5 @@
 package py.edu.ucom.integracion.migracion.tables;
 
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,13 +22,13 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
  */
 public class Pagos implements DatabaseTables {
 
-	public String codPago;
-	public Date fecPago;
-	public double monto;
-	// public ArrayList<DetPagos> detPagos;
-	// public ArrayList<CuoPagadas> cuoPagadas;
-	public String nroSocios;
-	public String nroCreditos;
+	private String codPago;
+	private Date fecPago;
+	private double monto;
+	private ArrayList<DetPagos> detPagos;
+	private ArrayList<CuoPagadas> cuoPagadas;
+	private String nroSocios;
+	private String nroCreditos;
 
 	public String getCodPago() {
 		return codPago;
@@ -103,5 +102,21 @@ public class Pagos implements DatabaseTables {
 
 	public void migrar(ConexionServer server) {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public ArrayList<DetPagos> getDetPagos() {
+		return detPagos;
+	}
+
+	public void setDetPagos(ArrayList<DetPagos> detPagos) {
+		this.detPagos = detPagos;
+	}
+
+	public ArrayList<CuoPagadas> getCuoPagadas() {
+		return cuoPagadas;
+	}
+
+	public void setCuoPagadas(ArrayList<CuoPagadas> cuoPagadas) {
+		this.cuoPagadas = cuoPagadas;
 	}
 }
