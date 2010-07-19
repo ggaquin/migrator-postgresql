@@ -42,17 +42,7 @@ public class DetPagos implements DatabaseTables{
     /** @pdGenerated default parent setter
      * @param newPagos */
     public void setPagos(Pagos newPagos) {
-        if (this.pagos == null || !this.pagos.equals(newPagos)) {
-            if (this.pagos != null) {
-                Pagos oldPagos = this.pagos;
-                this.pagos = null;
-                oldPagos.removeDetPagos(this);
-            }
-            if (newPagos != null) {
-                this.pagos = newPagos;
-                this.pagos.addDetPagos(this);
-            }
-        }
+
     }
 
     public void save(ConexionServer server) {

@@ -25,17 +25,6 @@ public class CuoPagadas implements DatabaseTables {
 	}
 
 	public void setPagos(Pagos newPagos) {
-		if (this.pagos == null || !this.pagos.equals(newPagos)) {
-			if (this.pagos != null) {
-				Pagos oldPagos = this.pagos;
-				this.pagos = null;
-				oldPagos.removeCuoPagadas(this);
-			}
-			if (newPagos != null) {
-				this.pagos = newPagos;
-				this.pagos.addCuoPagadas(this);
-			}
-		}
 	}
 
 	public Cuotas getCuotas() {
