@@ -9,8 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.postgresql.jdbc2.EscapedFunctions;
 import org.postgresql.util.PSQLException;
 import py.edu.ucom.integracion.migracion.exceptions.CreditosExceptionError;
+import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.SociosExceptionError;
 import py.edu.ucom.integracion.migracion.tables.Creditos;
 import py.edu.ucom.integracion.migracion.tables.Cuotas;
@@ -34,26 +37,20 @@ public class Migrator {
 		ConexionServer serverOrigen = conectarse(host, "migracion", user, pass);
 		ConexionServer serverDestino = conectarse(host, "cooperativa", user, pass);
 		try {
-			// migrarSocios(serverOrigen, serverDestino);
-			//migrarCreditos(serverOrigen, serverDestino);
+			migrarSocios(serverOrigen, serverDestino);
+			migrarCreditos(serverOrigen, serverDestino);
 			migrarPagos(serverOrigen, serverDestino);
-			// } catch (SociosExceptionError e) {
-			// System.out.println("Error en SOCIOS!!!");
-			// Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null,
-			// e);
-			// e.printStackTrace();
-
-			// } catch (CreditosExceptionError e) {
-			// System.out.println("Error en CREDITOS!!!");
-			// Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null,
-			// e);
-			//	e.printStackTrace();
-			// } catch (CuotaExceptionError e) {
-			// System.out.println("Error en CREDITOS!!!");
-			// Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null,
-			// e);
-			// e.printStackTrace();
 		} catch (SociosExceptionError e) {
+			System.out.println("Error en SOCIOS!!!");
+			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
+		} catch (CreditosExceptionError e) {
+			System.out.println("Error en CREDITOS!!!");
+			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
+		} catch (PagosExceptionError e) {
+			System.out.println("Error en PAGOS!!!");
+			Logger.getLogger(Migrator.class.getName()).log(Level.SEVERE, null, e);
 			e.printStackTrace();
 		} finally {
 			serverDestino.close();
@@ -96,13 +93,13 @@ public class Migrator {
 		return false;
 	}
 
-	private boolean migrarPagos(ConexionServer serverOrigen, ConexionServer serverDestino) throws SociosExceptionError {
+	private boolean migrarPagos(ConexionServer serverOrigen, ConexionServer serverDestino) throws PagosExceptionError {
 		ResultSet x;
 		Pagos pago;
 		try {
 			x = serverOrigen.selectQuery("select nropago, nrosocio,nrocredito,fecha_pago,monto_pago from pagos");
 			while (x.next()) {
-				 pago = new Pagos();
+				pago = new Pagos();
 				pago.setCodPago(x.getString(1));
 				pago.setNroSocios(x.getString(2));
 				pago.setNroCreditos(x.getString(3));
@@ -111,11 +108,11 @@ public class Migrator {
 				pago.save(serverDestino);
 			}
 		} catch (PSQLException e) {
-			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			PagosExceptionError error = new PagosExceptionError(e.getStackTrace().toString());
 			e.printStackTrace();
 			throw error;
 		} catch (SQLException e) {
-			SociosExceptionError error = new SociosExceptionError(e.getStackTrace().toString());
+			PagosExceptionError error = new PagosExceptionError(e.getStackTrace().toString());
 			e.printStackTrace();
 			throw error;
 		}
