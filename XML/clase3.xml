@@ -1,0 +1,76 @@
+<config>
+	<conexiones>
+		<conexionOrigen>
+			<host>localhost</host>
+			<port>123456</port>
+			<user>postgres</user>
+			<pass>123456</pass>
+			<database>migracion</database>
+		</conexionOrigen>
+		<conexionDestino>
+			<host>localhost</host>
+			<port>123456</port>
+			<user>postgres</user>
+			<pass>123456</pass>
+			<database>migracion</database>
+		</conexionDestino>
+	</conexiones>
+	<sqls>
+		<sql>
+			<origen>
+				<tabla>socios</tabla>
+				<campos>
+					<campo type="Integer">nrosocio</campo>
+					<campo type="String">nombre</campo>
+					<campo type="String">apellido</campo>
+				</campos>
+				<condiciones>
+					<condicion type="1">nrosocio=123456</condicion>
+				</condiciones>
+			</origen>
+			<destino>
+				<tabla>socios</tabla>
+				<campos>
+					<campo>
+						<type>Integer</type>
+						<columna>nrosocio</columna>
+					</campo>
+					<campo>
+						<type>String</type>
+						<columna>nombre</columna>
+					</campo>
+					<campo>
+						<type>String</type>
+						<columna>apellido</columna>
+					</campo>
+				</campos>
+			</destino>
+		</sql>
+		<sql>
+			<origen>
+			<tabla>creditos</tabla>
+			<campos>
+				<campo type="Integer">idcredito</campo>
+				<campo type="Integer">nrosocio</campo>
+			</campos>
+			<condiciones>
+				<condicion type="1">nrosolicitud=101520</condicion>
+			</condiciones>
+			</origen>
+			<destino>
+				<tabla>creditos</tabla>
+				<campos>
+					<campo>
+						<type>Integer</type>
+						<columna>idcredito</columna>
+					</campo>
+					<campo>
+						<type>Integer</type>
+						<columna>nrosocio</columna>
+					</campo>
+				</campos>
+			</destino>
+		</sql>
+	</sqls>
+
+</config>
