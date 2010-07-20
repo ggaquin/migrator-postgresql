@@ -1,0 +1,31 @@
+<tragadatos>
+	<conn type="source" classname="" user="" password="" connstring="" />
+	<conn type="target" classname="" user="" password="" connstring="" />
+
+	<translations>
+		<translation>
+
+			<source>
+				<sourceSql>select * from mg_country c
+					inner join mg_currency curr on
+					c.baseReceiveCurrency = curr.currencyCode
+				</sourceSql>
+				<fields>
+					<field name="countryName" type="STRING" />
+					<field name="currencyName" type="STRING" />
+				</fields>
+			</source>
+
+			<target name="test">
+				<fields>
+					<field name="nombre_pais" type="STRING" order="1" value="countryName" />
+					<field name="nombre_moneda" type="STRING" order="2"
+						value="currencyName" />
+				</fields>
+			</target>
+
+		</translation>
+
+	</translations>
+
+</tragadatos>
