@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +31,9 @@ public class Creditos implements DatabaseTables {
 	private TipCreditos tipCreditos;
 	private String socio;
 	private Solicitudes solicitud;
-	private ArrayList<Cuotas> cuotas;
+	private List<Cuotas> cuotas;
 
-	public ArrayList<Cuotas> getCuotas() {
+	public List<Cuotas> getCuotas() {
 		if(this.cuotas == null)
 			this.cuotas = new ArrayList<Cuotas>();
 		return cuotas;
@@ -86,6 +87,10 @@ public class Creditos implements DatabaseTables {
 		} catch (SQLException ex) {
 			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		for (Cuotas insert : cuotas) {
+			insert.save(server);
+		}
+
 	}
 
 	public void delete(ConexionServer server) {
