@@ -1,84 +1,92 @@
 package py.edu.ucom.integracion.migracion.tables;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.postgresql.util.PSQLException;
+
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import py.edu.ucom.integracion.migracion.ConexionServer;
+import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 
 /***********************************************************************
- * Module:  TipPagos.java
- * Author:  Largo
- * Purpose: Defines the Class TipPagos
+ * Module: TipPagos.java Author: Largo Purpose: Defines the Class TipPagos
  ***********************************************************************/
 public class TipPagos implements DatabaseTables {
 
-    public java.lang.String codTipPago;
-    public java.lang.String descripcion;
-    public java.util.Collection<DetPagos> detPagos;
+	public java.lang.String codTipPago;
+	public java.lang.String descripcion;
 
-    public java.util.Collection<DetPagos> getDetPagos() {
-        if (detPagos == null) {
-            detPagos = new java.util.HashSet<DetPagos>();
-        }
-        return detPagos;
-    }
+	
+	/**
+	 * @param codTipPago
+	 */
+	public TipPagos(String codTipPago, ConexionServer server) {
+		ResultSet x;
+		String query = "select * from tip_pagos where cod_tip_pago = ?";
+		try {
+			PreparedStatement statement = server.getConn().prepareStatement(query);
+			x= statement.executeQuery();
+			while (x.next()) {
+				this.codTipPago = x.getString(1);
+				this.descripcion = x.getString(2);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error en TIPPAGOS");
+			e.printStackTrace();
+		}
 
-    public java.util.Iterator getIteratorDetPagos() {
-        if (detPagos == null) {
-            detPagos = new java.util.HashSet<DetPagos>();
-        }
-        return detPagos.iterator();
-    }
+	}
 
-    public void setDetPagos(java.util.Collection<DetPagos> newDetPagos) {
-        removeAllDetPagos();
-        for (java.util.Iterator iter = newDetPagos.iterator(); iter.hasNext();) {
-            addDetPagos((DetPagos) iter.next());
-        }
-    }
+	// public java.util.Collection<DetPagos> detPagos;
+	@Override
+	public void delete(ConexionServer server) {
+		// TODO Auto-generated method stub
 
-    public void addDetPagos(DetPagos newDetPagos) {
-        if (newDetPagos == null) {
-            return;
-        }
-        if (this.detPagos == null) {
-            this.detPagos = new java.util.HashSet<DetPagos>();
-        }
-        if (!this.detPagos.contains(newDetPagos)) {
-            this.detPagos.add(newDetPagos);
-            newDetPagos.setTipPagos(this);
-        }
-    }
+	}
 
-    public void removeDetPagos(DetPagos oldDetPagos) {
-        if (oldDetPagos == null) {
-            return;
-        }
-        if (this.detPagos != null) {
-            if (this.detPagos.contains(oldDetPagos)) {
-                this.detPagos.remove(oldDetPagos);
-                oldDetPagos.setTipPagos((TipPagos) null);
-            }
-        }
-    }
+	@Override
+	public void migrar(ConexionServer server) {
+		// TODO Auto-generated method stub
 
-    public void removeAllDetPagos() {
-        if (detPagos != null) {
-            DetPagos oldDetPagos;
-            for (java.util.Iterator iter = getIteratorDetPagos(); iter.hasNext();) {
-                oldDetPagos = (DetPagos) iter.next();
-                iter.remove();
-                oldDetPagos.setTipPagos((TipPagos) null);
-            }
-        }
-    }
+	}
 
-    public void save(ConexionServer server) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public void save(ConexionServer server) {
+		// TODO Auto-generated method stub
 
-    public void delete(ConexionServer server) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	}
 
-    public void migrar(ConexionServer server) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	/**
+	 * @return the codTipPago
+	 */
+	public java.lang.String getCodTipPago() {
+		return codTipPago;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public java.lang.String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param codTipPago
+	 *           the codTipPago to set
+	 */
+	public void setCodTipPago(java.lang.String codTipPago) {
+		this.codTipPago = codTipPago;
+	}
+
+	/**
+	 * @param descripcion
+	 *           the descripcion to set
+	 */
+	public void setDescripcion(java.lang.String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 }
