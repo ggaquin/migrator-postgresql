@@ -1,4 +1,4 @@
-package py.edu.ucom.integracion.migracion.xml;
+package py.edu.ucom.integracion.migracion.xml.largo;
 
 import java.util.ArrayList;
 import java.util.List;

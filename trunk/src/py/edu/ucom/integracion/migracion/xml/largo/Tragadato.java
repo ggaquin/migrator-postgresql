@@ -1,7 +1,7 @@
 /**
  * 
  */
-package py.edu.ucom.integracion.migracion.xml;
+package py.edu.ucom.integracion.migracion.xml.largo;
 
 import java.awt.List;
 import java.sql.Connection;
