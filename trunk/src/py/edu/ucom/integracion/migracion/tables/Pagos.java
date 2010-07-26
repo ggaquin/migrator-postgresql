@@ -86,9 +86,10 @@ public class Pagos implements DatabaseTables {
 			statement.setString(3, this.nroCreditos);
 			statement.setDate(4, (java.sql.Date) this.fecPago);
 			statement.setDouble(5, this.monto);
-
-
 			statement.executeUpdate();
+			for (DetPagos detalles : detPagos) {
+				detalles.save(server);
+			}
 		} catch (PSQLException ex) {
 			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (SQLException ex) {
@@ -108,8 +109,8 @@ public class Pagos implements DatabaseTables {
 		return detPagos;
 	}
 
-	public void setDetPagos(ArrayList<DetPagos> detPagos) {
-		this.detPagos = detPagos;
+	public void setDetPagos(DetPagos detPagos) {
+		this.detPagos.add(detPagos);
 	}
 
 	public ArrayList<CuoPagadas> getCuoPagadas() {

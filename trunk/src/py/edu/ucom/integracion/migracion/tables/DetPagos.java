@@ -20,8 +20,10 @@ import py.edu.ucom.integracion.migracion.ConexionServer;
  */
 public class DetPagos implements DatabaseTables {
 
-	public String codPagDetalle;
-	public TipPagos tipPagos;
+	private String codPagDetalle;
+	private String codPago;
+	private TipPagos tipPagos;
+	private Double monPago;
 
 
 	@Override
@@ -40,22 +42,17 @@ public class DetPagos implements DatabaseTables {
 	public void save(ConexionServer server) {
 		String query = new String();
 		TipPagos tipPago;
-		query = "INSERT INTO public.pagos(" +
+		query = "INSERT INTO det_pagos(" +
+			"cod_tip_pago," +
 			"cod_pago," +
-			"nro_socio," +
-			"nro_credito," +
-			"fec_pago," +
-			"monto) VALUES (?,?,?,?,?)";
+			"cod_pag_detalle) " +
+			"VALUES (?,?,?)";
 		try {
 			PreparedStatement statement =
 				server.getConn().prepareStatement(query);
 			statement.setString(1, this.codPagDetalle);
-//			statement.setString(2, this.nroSocios);
-//			statement.setString(3, this.nroCreditos);
-//			statement.setDate(4, (java.sql.Date) this.fecPago);
-//			statement.setDouble(5, this.monto);
-
-
+			statement.setString(2, this.codPago);
+			statement.setString(3, this.tipPagos.getCodTipPago());
 			statement.executeUpdate();
 		} catch (PSQLException ex) {
 			Logger.getLogger(Socios.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,6 +90,34 @@ public class DetPagos implements DatabaseTables {
 	 */
 	public void setTipPagos(TipPagos tipPagos) {
 		this.tipPagos = tipPagos;
+	}
+
+	/**
+	 * @return the monPago
+	 */
+	public Double getMonPago() {
+		return monPago;
+	}
+
+	/**
+	 * @param monPago the monPago to set
+	 */
+	public void setMonPago(Double monPago) {
+		this.monPago = monPago;
+	}
+
+	/**
+	 * @return the codPago
+	 */
+	public String getCodPago() {
+		return codPago;
+	}
+
+	/**
+	 * @param codPago the codPago to set
+	 */
+	public void setCodPago(String codPago) {
+		this.codPago = codPago;
 	}
 
 
