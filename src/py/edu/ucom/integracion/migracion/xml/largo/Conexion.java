@@ -1,4 +1,4 @@
-package py.edu.ucom.integracion.migracion.xml;
+package py.edu.ucom.integracion.migracion.xml.largo;
 
 public class Conexion {
 	private ConnectionType type;
