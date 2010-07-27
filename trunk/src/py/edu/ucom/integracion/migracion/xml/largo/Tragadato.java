@@ -3,7 +3,7 @@
  */
 package py.edu.ucom.integracion.migracion.xml.largo;
 
-import java.awt.List;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -48,7 +48,7 @@ public class Tragadato {
 		Source source = new Source();
 		source.setSql("select * from mg_country c	inner join mg_currency curr on c.baseReceiveCurrency = curr.currencyCode");
 
-		ArrayList<Field> list = new ArrayList();
+		List<Field> list = new ArrayList<Field>();
 		Field f = new Field();
 		f.setName("countryName");
 		f.setType("string");
@@ -64,7 +64,7 @@ public class Tragadato {
 		Target target = new Target();
 		target.setTarget("test");
 
-		list = new ArrayList();
+		list = new ArrayList<Field>();
 		f = new Field();
 		f.setName("nombre_pais");
 		f.setType("string");
