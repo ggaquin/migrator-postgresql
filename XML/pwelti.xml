@@ -1,31 +1,29 @@
 <tragadatos>
-	<conn type="source" classname="" user="" password="" connstring="" />
+	<conn type="source" classname="org.postgresql.Driver" user="postgres" password="12345" connstring="jdbc:postgresql://localhost/test" />
 	<conn type="target" classname="" user="" password="" connstring="" />
 
 	<translations>
 		<translation>
 
 			<source>
-				<sourceSql>select * from mg_country c
-					inner join mg_currency curr on
-					c.baseReceiveCurrency = curr.currencyCode
+				<sourceSql>select * from socio
 				</sourceSql>
 				<fields>
-					<field name="countryName" type="STRING" />
-					<field name="currencyName" type="STRING" />
+					<field name="nrosocio"  type="INTEGER" />
+					<field name="nombres"   type="STRING" />
+					<field name="apellidos" type="STRING" />
 				</fields>
 			</source>
 
-			<target name="test">
+			<target name="trad_socios">
 				<fields>
-					<field name="nombre_pais" type="STRING" order="1" value="countryName" />
-					<field name="nombre_moneda" type="STRING" order="2"
-						value="currencyName" />
+					<field name="nrosocio" type="INTEGER" order="1" value="nrosocio" />
+					<field name="nombre" type="STRING" order="2" value="nombres" />
+					<field name="apellido" type="STRING" order="3" value="apellidos" />
 				</fields>
 			</target>
 
 		</translation>
 
-	</translations>
 
 </tragadatos>
