@@ -1,0 +1,4 @@
+﻿insert into tip_pagos (cod_tip_pago, descripcion) values ('1','Efectivo');
+insert into tip_pagos (cod_tip_pago, descripcion) values ('2','Cheque');
+insert into tip_pagos (cod_tip_pago, descripcion) values ('3','Tarjeta');
+commit;
