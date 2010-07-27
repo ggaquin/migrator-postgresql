@@ -1,8 +1,13 @@
 package py.edu.ucom.integracion.migracion.xml.hernan;
 
 public class Field {
+	
+	public static enum Type{
+		STRING, INTEGER, DATE, BOOLEAN
+	}
+	
 	private String name;
-	private String type;
+	private Type type;
 	private String value;
 	private int order;
 	
@@ -24,11 +29,12 @@ public class Field {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
+
 
 }
