@@ -3,7 +3,6 @@
  */
 package py.edu.ucom.integracion.migracion.xml.largo;
 
-import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,74 +20,89 @@ public class Tragadato {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Nueva coneccion para el origen
-		Conexion connSource = new Conexion();
-		connSource.setType(Conexion.ConnectionType.SOURCE);
-		connSource.setClassname("");
-		connSource.setConnstring("");
-		connSource.setPassword("");
-		connSource.setUser("");
-		// Nueva coneccion para el destino
-		Conexion connTarget = new Conexion();
-		connTarget.setType(Conexion.ConnectionType.TARGET);
-		connTarget.setClassname("");
-		connTarget.setConnstring("");
-		connTarget.setPassword("");
-		connTarget.setUser("");
-
 		// Nuevo objeto de configuracion
 		Config config = new Config();
-		// cargo las conecciones
-		config.setSource(connSource);
-		config.setTarget(connTarget);
+		
+		
+//		// Nueva coneccion para el origen
+//		Conexion connSource = new Conexion();
+//		connSource.setType(Conexion.ConnectionType.SOURCE);
+//		connSource.setClassname("org.postgresql.Driver");
+//		connSource.setConnstring("jdbc:postgresql://localhost/postgres");
+//		connSource.setUser("postgres");
+//		connSource.setPassword("123456");
+//
+//		// Nueva coneccion para el destino
+//		Conexion connTarget = new Conexion();
+//		connTarget.setType(Conexion.ConnectionType.TARGET);
+//		connTarget.setClassname("org.postgresql.Driver");
+//		connTarget.setConnstring("jdbc:postgresql://localhost/postgres");
+//		connTarget.setPassword("123456");
+//		connTarget.setUser("postgres");
+//		
+//		// cargo las conecciones
+//		config.setSource(connSource);
+//		config.setTarget(connTarget);
 
 		// objeto translation (donde estan los sql, campos, tipos y orden)
-		Translation translation = new Translation();
+//		Translation translation = new Translation();
 
-		Source source = new Source();
-		source.setSql("select * from mg_country c	inner join mg_currency curr on c.baseReceiveCurrency = curr.currencyCode");
+//		Source source = new Source();
+//		source.setSql("select * from socios");
 
-		List<Field> list = new ArrayList<Field>();
-		Field f = new Field();
-		f.setName("countryName");
-		f.setType("string");
-		list.add(f);
-
-		f = new Field();
-		f.setName("currencyName");
-		f.setType("string");
-		list.add(f);
-
-		// -------------------------------------------------------
-
-		Target target = new Target();
-		target.setTarget("test");
-
-		list = new ArrayList<Field>();
-		f = new Field();
-		f.setName("nombre_pais");
-		f.setType("string");
-		f.setOrder(1);
-		f.setValue("countryName");
-		list.add(f);
-
-		f = new Field();
-		f.setName("nombre_moneda");
-		f.setType("string");
-		f.setOrder(2);
-		f.setValue("currencyName");
-		list.add(f);
-
-		target.setCampos(list);
-
-		translation.setSource(source);
-		translation.setTarget(target);
-
-		config.getTranslations().add(translation);
+//		java.util.List<Field> list = new ArrayList<Field>();
+//		Field f = new Field();
+//		f.setName("nrosocio");
+//		f.setType(Field.Type.INTEGER);
+//		list.add(f);
+//
+//		f = new Field();
+//		f.setName("nombres");
+//		f.setType(Field.Type.STRING);
+//		list.add(f);
+//
+//		f = new Field();
+//		f.setName("apellidos");
+//		f.setType(Field.Type.STRING);
+//		list.add(f);
+//
+//		// -------------------------------------------------------
+//
+//		Target target = new Target();
+//		target.setTarget("trad_socios");
+//
+//		list = new ArrayList<Field>();
+//		f = new Field();
+//		f.setName("nrosocio");
+//		f.setType(Field.Type.INTEGER);
+//		f.setOrder(1);
+//		f.setValue("nrosocio");
+//		list.add(f);
+//
+//		f = new Field();
+//		f.setName("nombre");
+//		f.setType(Field.Type.STRING);
+//		f.setOrder(2);
+//		f.setValue("nombres");
+//		list.add(f);
+//
+//		f = new Field();
+//		f.setName("apellido");
+//		f.setType(Field.Type.STRING);
+//		f.setOrder(2);
+//		f.setValue("apellidos");
+//		list.add(f);
+//		
+//		target.setCampos(list);
+//
+//		translation.setSource(source);
+//		translation.setTarget(target);
+//
+//		config.getTranslations().add(translation);
 
 		// ------------------------------------------------------
 		// -------------------------------------------------------
-
+		int line = 1;
 		try {
 			Class.forName(config.getSource().getClassname());
 			Connection conSource = DriverManager.getConnection(
@@ -105,6 +119,7 @@ public class Tragadato {
 				);
 
 			for (Translation traslation : config.getTranslations()) {
+
 				PreparedStatement psOrigen = conSource.prepareStatement(
 																traslation.getSource().getSql());
 
@@ -120,18 +135,41 @@ public class Tragadato {
 					sqlInsert = sqlInsert + campo.getName();
 					values = values + "?";
 					i++;
-					if( i < (traslation.getTarget().getCampos().size()-1)){
+					if( i < (traslation.getTarget().getCampos().size())){
 						sqlInsert = sqlInsert + ", ";
 						values = values + ", ";
 					}
 				}
 				sqlInsert = sqlInsert + ") values (" + values +")";  
 				 
-				
-				
-				while(rsOrigen.next()){
+				PreparedStatement psdestino = conTarget.prepareStatement(sqlInsert);
+				//conTarget.setAutoCommit(false);
+				while(rsOrigen.next()){					
+					i=1;
+					for(Field destino : config.getTranslations().get(0).getTarget().getCampos()){
+						switch (destino.getType()) {
+							case STRING:
+								psdestino.setString(i,rsOrigen.getString(destino.getValue()) );
+								break;
+								
+							case INTEGER:
+								psdestino.setInt(i,rsOrigen.getInt(destino.getValue()) );
+								break;	
+								
+							default:
+								throw new  RuntimeException("No exite un cambo del tipo " + destino.getType());
+						}
+						i++;
+					}
 					
+					System.out.print(".");
+					if(line % 50 == 0){
+						System.out.print("\n");
+					}
+					line++;
+					psdestino.executeUpdate();
 				}
+				//conTarget.commit();
 				
 			}
 
@@ -139,7 +177,7 @@ public class Tragadato {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.err.println(String.format("Error en la linea %d",line));
 			e.printStackTrace();
 		}
 
