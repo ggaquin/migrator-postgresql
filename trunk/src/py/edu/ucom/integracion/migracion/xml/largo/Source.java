@@ -15,10 +15,13 @@ public class Source {
 		Element source = element.getChild("source");
 		this.sql = source.getAttributeValue("sourceSql");
 		List<Element> fields = new ArrayList<Element>();
+		fields = source.getChildren("fields");
 		for (Element campo : fields) {
 			Field field = new Field();
 			field.setName(campo.getAttributeValue("name"));
-			field.setType(field.getType().)
+			field.setType(field.getType().fromString(campo.getAttributeValue("type")));
+			field.setOrder(Integer.valueOf(campo.getAttributeValue("order")));
+			field.setValue(campo.getAttributeValue("value"));
 		}
 	}
 

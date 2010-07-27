@@ -9,6 +9,7 @@ public class Translation {
 	
 	public Translation(Element element) {
 		source = new Source(element.getChild("source"));
+		target = new Target(element.getChild("target"));
 	}
 	public Source getSource() {
 		return source;

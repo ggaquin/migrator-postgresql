@@ -15,8 +15,9 @@ public class Config {
 	private Conexion target;
 	private List<Translation> translations = new ArrayList<Translation>();
 
-	public Config(Document doc) {
+	public Config() {
 		SAXBuilder builder = new SAXBuilder();
+		Document doc = new Document();
 		try {
 			doc = builder.build("XML/pwelti.xml");
 		} catch (JDOMException e) {
