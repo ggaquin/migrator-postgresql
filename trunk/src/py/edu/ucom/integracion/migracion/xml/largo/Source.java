@@ -18,6 +18,7 @@ public class Source {
 		for (Element campo : fields) {
 			Field field = new Field();
 			field.setName(campo.getAttributeValue("name"));
+			field.setType(field.getType().)
 		}
 	}
 
