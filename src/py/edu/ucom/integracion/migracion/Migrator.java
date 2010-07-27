@@ -5,6 +5,7 @@
 
 package py.edu.ucom.integracion.migracion;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -17,11 +18,14 @@ import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.SociosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.TipCreditosExceptionError;
 import py.edu.ucom.integracion.migracion.tables.Creditos;
+import py.edu.ucom.integracion.migracion.tables.CuoPagadas;
 import py.edu.ucom.integracion.migracion.tables.Cuotas;
+import py.edu.ucom.integracion.migracion.tables.DetPagos;
 import py.edu.ucom.integracion.migracion.tables.Pagos;
 import py.edu.ucom.integracion.migracion.tables.Socios;
 import py.edu.ucom.integracion.migracion.tables.Solicitudes;
 import py.edu.ucom.integracion.migracion.tables.TipCreditos;
+import py.edu.ucom.integracion.migracion.tables.TipPagos;
 
 /**
  * 
@@ -33,6 +37,7 @@ public class Migrator {
 	String database = "migracion";
 	String user = "postgres";
 	String pass = "123456";
+	static int counter = 0;
 
 	void migrar() {
 		ConexionServer serverOrigen = conectarse(host, "migracion", user, pass);
@@ -126,9 +131,13 @@ public class Migrator {
 
 	private boolean migrarPagos(ConexionServer serverOrigen, ConexionServer serverDestino) throws PagosExceptionError {
 		ResultSet x;
+		ResultSet y;
+		PreparedStatement queryDetalles;
 		Pagos pago;
+		DetPagos detPago;
+		CuoPagadas cuoPagada;
 		try {
-			x = serverOrigen.selectQuery("select nropago, nrosocio,nrocredito,fecha_pago,monto_pago from pagos");
+			x = serverOrigen.selectQuery("select * from pagos");
 			while (x.next()) {
 				pago = new Pagos();
 				pago.setCodPago(x.getString(1));
@@ -136,6 +145,35 @@ public class Migrator {
 				pago.setNroCreditos(x.getString(3));
 				pago.setFecPago(x.getDate(4));
 				pago.setMonto(x.getDouble(5));
+				
+				if(x.getDouble(9) > 0){
+					detPago = new DetPagos();
+					detPago.setTipPagos(new TipPagos("2", serverDestino));
+					detPago.setCodPagDetalle(String.valueOf(counter));
+					detPago.setMonPago(x.getDouble(9));
+					detPago.setCodPago(pago.getCodPago());
+					pago.setDetPagos(detPago);
+					counter++;
+				}
+				if (x.getDouble(10) > 0){
+					detPago = new DetPagos();
+					detPago.setTipPagos(new TipPagos("1", serverDestino));
+					detPago.setCodPagDetalle(String.valueOf(counter));
+					detPago.setMonPago(x.getDouble(10));
+					detPago.setCodPago(pago.getCodPago());
+					pago.setDetPagos(detPago);			
+					counter++;
+				}
+				if (x.getDouble(11) > 0){
+					detPago = new DetPagos();
+					detPago.setTipPagos(new TipPagos("3", serverDestino));
+					detPago.setCodPagDetalle(String.valueOf(counter));
+					detPago.setMonPago(x.getDouble(10));
+					detPago.setCodPago(pago.getCodPago());
+					pago.setDetPagos(detPago);
+					counter++;
+				}
+
 				pago.save(serverDestino);
 			}
 		} catch (PSQLException e) {

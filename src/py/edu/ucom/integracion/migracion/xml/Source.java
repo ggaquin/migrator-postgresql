@@ -1,19 +1,21 @@
-package py.edu.ucom.integracion.migracion.xml.largo;
+package py.edu.ucom.integracion.migracion.xml;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom.Attribute;
 import org.jdom.Element;
 
-public class Target {
-	private String target;
+public class Source {
+	private String sql;
 	private List<Field> campos;
-	
-	public Target(Element element) {
-		Element target = element.getChild("target");
-		this.setTarget(target.getAttributeValue("name"));
+
+
+	public Source(Element element) {
+		Element source = element.getChild("source");
+		this.sql = source.getAttributeValue("sourceSql");
 		List<Element> fields = new ArrayList<Element>();
-		fields = target.getChildren("fields");
+		fields = source.getChildren("fields");
 		for (Element campo : fields) {
 			Field field = new Field();
 			field.setName(campo.getAttributeValue("name"));
@@ -22,17 +24,22 @@ public class Target {
 			field.setValue(campo.getAttributeValue("value"));
 		}
 	}
-	public String getTarget() {
-		return target;
-	}
-	public void setTarget(String target) {
-		this.target = target;
-	}
+
 	public List<Field> getCampos() {
 		return campos;
 	}
+
 	public void setCampos(List<Field> campos) {
 		this.campos = campos;
 	}
 
+	public String getSql() {
+		return sql;
+	}
+
+	public void setSql(String sql) {
+		this.sql = sql;
+	}
+
+	
 }

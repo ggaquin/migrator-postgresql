@@ -1,4 +1,4 @@
-package py.edu.ucom.integracion.migracion.xml.largo;
+package py.edu.ucom.integracion.migracion.xml;
 
 public class Sql {
 	private String sql;

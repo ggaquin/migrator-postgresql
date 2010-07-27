@@ -1,4 +1,4 @@
-package py.edu.ucom.integracion.migracion.xml.largo;
+package py.edu.ucom.integracion.migracion.xml;
 
 import java.io.IOException;
 import java.util.ArrayList;
