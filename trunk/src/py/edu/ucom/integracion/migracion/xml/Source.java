@@ -3,7 +3,6 @@ package py.edu.ucom.integracion.migracion.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom.Attribute;
 import org.jdom.Element;
 
 public class Source {
@@ -12,16 +11,17 @@ public class Source {
 
 
 	public Source(Element element) {
-		Element source = element.getChild("source");
-		this.sql = source.getAttributeValue("sourceSql");
+		//this.sql = new String();
+		this.sql = element.getChild("sourceSql").getValue();
 		List<Element> fields = new ArrayList<Element>();
-		fields = source.getChildren("fields");
+		Element campos = element.getChild("fields");
+		fields = campos.getChildren("field");
 		for (Element campo : fields) {
 			Field field = new Field();
 			field.setName(campo.getAttributeValue("name"));
-			field.setType(field.getType().fromString(campo.getAttributeValue("type")));
-			field.setOrder(Integer.valueOf(campo.getAttributeValue("order")));
-			field.setValue(campo.getAttributeValue("value"));
+			field.setType(Field.Type.fromString(campo.getAttributeValue("type")));
+//			field.setOrder(Integer.valueOf(campo.getAttributeValue("order")));
+//			field.setValue(campo.getAttributeValue("value"));
 		}
 	}
 
