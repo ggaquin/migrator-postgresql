@@ -1,6 +1,6 @@
 <tragadatos>
-	<conn type="source" classname="org.postgresql.Driver" user="postgres" password="12345" connstring="jdbc:postgresql://localhost/test" />
-	<conn type="target" classname="" user="" password="" connstring="" />
+	<conn type="source" classname="org.postgresql.Driver" user="postgres" password="123456" connstring="jdbc:postgresql://localhost/migracion" />
+	<conn type="target" classname="org.postgresql.Driver" user="postgres" password="123456" connstring="jdbc:postgresql://localhost/test" />
 
 	<translations>
 		<translation>
@@ -9,8 +9,8 @@
 				<sourceSql>select * from socio
 				</sourceSql>
 				<fields>
-					<field name="nrosocio"  type="INTEGER" />
-					<field name="nombres"   type="STRING" />
+					<field name="nrosocio" type="INTEGER" />
+					<field name="nombres" type="STRING" />
 					<field name="apellidos" type="STRING" />
 				</fields>
 			</source>
@@ -24,6 +24,6 @@
 			</target>
 
 		</translation>
-
+	</translations>
 
 </tragadatos>
