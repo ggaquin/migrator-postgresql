@@ -11,7 +11,7 @@ public class Target {
 	
 	public Target(Element element) {
 		Element target = element.getChild("target");
-		this.setTarget(target.getValue());
+		this.setTarget(target.getAttributeValue("name"));
 		List<Element> fields = new ArrayList<Element>();
 		fields = target.getChildren("fields");
 		for (Element campo : fields) {
