@@ -42,7 +42,7 @@ public class Config {
 		Element translation = root.getChild("translations");
 		List<Element> translations = translation.getChildren("translation");
 		for (Element element : translations) {
-			Translation trans = new Translation(element);
+			this.translations.add(new Translation(element));
 		}
 		/*
 		 * Boolean.parseBoolean(statusNode.getValue()); Element tableNode =

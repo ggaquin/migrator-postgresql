@@ -6,7 +6,7 @@
 		<translation>
 
 			<source>
-				<sourceSql>select * from socio
+				<sourceSql>select * from socios
 				</sourceSql>
 				<fields>
 					<field name="nrosocio" type="INTEGER" />

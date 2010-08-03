@@ -10,7 +10,7 @@ public class Conexion {
 	private String connstring;
 	
 	public Conexion(Element element) {
-		this.classname=element.getAttributeValue(classname);
+		this.classname=element.getAttributeValue("classname");
 		this.user = element.getAttributeValue("user");
 		this.password = element.getAttributeValue("password");
 		this.connstring = element.getAttributeValue("connstring");
