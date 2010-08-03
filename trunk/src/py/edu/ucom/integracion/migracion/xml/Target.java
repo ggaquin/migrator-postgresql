@@ -7,7 +7,7 @@ import org.jdom.Element;
 
 public class Target {
 	private String target;
-	private List<Field> campos;
+	private List<Field> campos = new ArrayList<Field>();
 	
 	public Target(Element element) {
 		//Element target = element.getChild("target");
@@ -21,6 +21,7 @@ public class Target {
 			field.setType(field.getType().fromString(campo.getAttributeValue("type")));
 			field.setOrder(Integer.valueOf(campo.getAttributeValue("order")));
 			field.setValue(campo.getAttributeValue("value"));
+			this.campos.add(field);
 		}
 	}
 	public String getTarget() {
