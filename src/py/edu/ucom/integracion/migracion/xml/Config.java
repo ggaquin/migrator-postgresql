@@ -31,10 +31,10 @@ public class Config {
 		for (Element element : conn) {
 			String type = element.getAttribute("type").getValue();
 			if (type.compareToIgnoreCase(Conexion.ConnectionType.SOURCE.toString()) == 0) {
-				Conexion connSource = new Conexion(element);
+				this.source = new Conexion(element);
 			}
 			else {
-				Conexion connTarget = new Conexion(element);
+				this.target = new Conexion(element);
 
 			}
 		}
