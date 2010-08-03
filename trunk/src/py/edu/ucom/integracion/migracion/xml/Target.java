@@ -10,10 +10,11 @@ public class Target {
 	private List<Field> campos;
 	
 	public Target(Element element) {
-		Element target = element.getChild("target");
-		this.setTarget(target.getAttributeValue("name"));
+		//Element target = element.getChild("target");
+		this.setTarget(element.getAttributeValue("name"));
 		List<Element> fields = new ArrayList<Element>();
-		fields = target.getChildren("fields");
+		Element target = element.getChild("fields"); 
+		fields = target.getChildren("field");
 		for (Element campo : fields) {
 			Field field = new Field();
 			field.setName(campo.getAttributeValue("name"));
