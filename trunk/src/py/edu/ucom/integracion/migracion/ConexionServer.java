@@ -4,14 +4,14 @@
  */
 package py.edu.ucom.integracion.migracion;
 
-import java.sql.CallableStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.Properties;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JOptionPane;
+
 import org.postgresql.util.PSQLException;
 
 /**
@@ -20,6 +20,7 @@ import org.postgresql.util.PSQLException;
  */
 public class ConexionServer {
 
+	@SuppressWarnings("unused")
 	private int numeroCols;
 	private Connection conn;
 	private ResultSet result;

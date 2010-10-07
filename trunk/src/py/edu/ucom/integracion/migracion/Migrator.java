@@ -5,7 +5,6 @@
 
 package py.edu.ucom.integracion.migracion;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,7 +17,6 @@ import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.SociosExceptionError;
 import py.edu.ucom.integracion.migracion.exceptions.TipCreditosExceptionError;
 import py.edu.ucom.integracion.migracion.tables.Creditos;
-import py.edu.ucom.integracion.migracion.tables.CuoPagadas;
 import py.edu.ucom.integracion.migracion.tables.Cuotas;
 import py.edu.ucom.integracion.migracion.tables.DetPagos;
 import py.edu.ucom.integracion.migracion.tables.Pagos;
@@ -131,11 +129,11 @@ public class Migrator {
 
 	private boolean migrarPagos(ConexionServer serverOrigen, ConexionServer serverDestino) throws PagosExceptionError {
 		ResultSet x;
-		ResultSet y;
-		PreparedStatement queryDetalles;
+		//ResultSet y;
+		//PreparedStatement queryDetalles;
 		Pagos pago;
 		DetPagos detPago;
-		CuoPagadas cuoPagada;
+		//CuoPagadas cuoPagada;
 		try {
 			x = serverOrigen.selectQuery("select * from pagos");
 			while (x.next()) {
@@ -224,13 +222,15 @@ public class Migrator {
 				creditos.save(serverDestino);
 			}
 		} catch (PSQLException e) {
-			SociosExceptionError error = new SociosExceptionError(e
+			CreditosExceptionError error = new CreditosExceptionError(e
 				.getStackTrace().toString());
 			e.printStackTrace();
+			throw error;
 		} catch (SQLException e) {
-			SociosExceptionError error = new SociosExceptionError(e
+			CreditosExceptionError error = new CreditosExceptionError(e
 				.getStackTrace().toString());
 			e.printStackTrace();
+			throw error;
 		}
 		return false;
 	}

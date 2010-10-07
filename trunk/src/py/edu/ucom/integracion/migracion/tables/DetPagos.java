@@ -41,7 +41,7 @@ public class DetPagos implements DatabaseTables {
 	@Override
 	public void save(ConexionServer server) {
 		String query = new String();
-		TipPagos tipPago;
+		//TipPagos tipPago;
 		query = "INSERT INTO det_pagos(" +
 			"cod_tip_pago," +
 			"cod_pago," +

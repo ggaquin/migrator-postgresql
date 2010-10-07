@@ -14,6 +14,7 @@ public class Config {
 	private Conexion target;
 	private List<Translation> translations = new ArrayList<Translation>();
 
+	@SuppressWarnings("unchecked")
 	public Config() {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = new Document();
