@@ -1,9 +1,8 @@
 package py.edu.ucom.integracion.migracion.tables;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

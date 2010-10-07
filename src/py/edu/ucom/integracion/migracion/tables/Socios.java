@@ -52,7 +52,7 @@ public class Socios implements DatabaseTables {
         return pagos;
     }
 
-    public java.util.Iterator getIteratorPagos() {
+    public java.util.Iterator<Pagos> getIteratorPagos() {
         if (pagos == null) {
             pagos = new java.util.HashSet<Pagos>();
         }
@@ -61,7 +61,7 @@ public class Socios implements DatabaseTables {
 
     public void setPagos(java.util.Collection<Pagos> newPagos) {
         removeAllPagos();
-        for (java.util.Iterator iter = newPagos.iterator(); iter.hasNext();) {
+        for (java.util.Iterator<Pagos> iter = newPagos.iterator(); iter.hasNext();) {
             addPagos((Pagos) iter.next());
         }
     }

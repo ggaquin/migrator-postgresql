@@ -1,6 +1,5 @@
 package py.edu.ucom.integracion.migracion.xml;
 
-import py.edu.ucom.integracion.migracion.xml.Conexion.ConnectionType;
 
 public class Field {
 

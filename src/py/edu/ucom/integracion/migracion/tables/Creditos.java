@@ -50,6 +50,7 @@ public class Creditos implements DatabaseTables {
 	public void setTipCreditos(TipCreditos newTipCreditos) {
 		if (this.tipCreditos == null || !this.tipCreditos.equals(newTipCreditos)) {
 			if (this.tipCreditos != null) {
+				@SuppressWarnings("unused")
 				TipCreditos oldTipCreditos = this.tipCreditos;
 				this.tipCreditos = null;
 			}

@@ -9,6 +9,7 @@ public class Target {
 	private String target;
 	private List<Field> campos = new ArrayList<Field>();
 	
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public Target(Element element) {
 		//Element target = element.getChild("target");
 		this.setTarget(element.getAttributeValue("name"));

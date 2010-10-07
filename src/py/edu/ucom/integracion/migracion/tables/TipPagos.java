@@ -4,12 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.postgresql.util.PSQLException;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import py.edu.ucom.integracion.migracion.ConexionServer;
-import py.edu.ucom.integracion.migracion.exceptions.PagosExceptionError;
 
 /***********************************************************************
  * Module: TipPagos.java Author: Largo Purpose: Defines the Class TipPagos

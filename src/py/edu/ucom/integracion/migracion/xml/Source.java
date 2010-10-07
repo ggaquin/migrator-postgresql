@@ -10,6 +10,7 @@ public class Source {
 	private List<Field> campos;
 
 
+	@SuppressWarnings("unchecked")
 	public Source(Element element) {
 		//this.sql = new String();
 		this.sql = element.getChild("sourceSql").getValue();
